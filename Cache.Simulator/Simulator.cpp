@@ -17,7 +17,7 @@ namespace WINDOWS
     #include <Windows.h>
 }
 
-/ Output file
+// Output file
 ofstream OutFile;
 
 // cache entry
