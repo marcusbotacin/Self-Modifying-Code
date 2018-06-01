@@ -12,6 +12,7 @@ Provide a security look over architectural implications of SMC execution.
 
 ## Repository Organization
 
+* **LinuxSimulation/**: A simple Linux kernel module to evaluate the cost of performing I/O.
 * **Cache.Simulator**: A PIN-based, flush-aware cache simulator.
 * **Detector**: A PEBS-based SMC detector.
 * **Examples**: SMC code used for evaluation.
