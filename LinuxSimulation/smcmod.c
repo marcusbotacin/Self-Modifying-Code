@@ -10,15 +10,19 @@
 #include<linux/semaphore.h>
 #include<linux/uaccess.h>		
 #include<linux/device.h>
+#include<linux/thread_info.h>
 
 /* Device Name */
 #define DEVICE_NAME "smcmod"
 
 /* PID Size */
-#define PID_SIZE 5
+#define PID_SIZE 10
 
 /* Flag Size */
 #define FLAG_SIZE 3
+
+/* Number of monitored processes */
+#define MAX_PROCS 20
 
 /* Device Object */
 struct cdev *mcdev;		
@@ -51,12 +55,59 @@ int device_close(struct inode *inode, struct file *filp)
     return 0;
 }
 
+/* Get currently running process */
+int get_process(void)
+{
+    /* ask scheduler */
+    return current->pid;
+}
+
+/* Check current process is being monitored or not */
+int check_process_monitored(int pid)
+{
+    int i;
+    int monitored_flags[MAX_PROCS];
+    /* Traverse whole list */
+    for(i=0;i<MAX_PROCS;i++)
+    {
+        /* If found */
+        if(monitored_flags[i]==pid)
+        {
+            return 1;
+        }
+    }
+    /* Not found */
+    return 0;
+}
+
 /* Read Routine */
 ssize_t device_read(struct file *filp, char *bufStoreData,
         size_t bufCount, loff_t* curOffset) 
 {
+    int ret;
+    int pid;
+    int monitored;
+    cycles_t before, after;
+
+    /* Measure time */
+    before = get_cycles();
+    /* get current process */
+    pid = get_process();
+    after = get_cycles();
+    printk("[SMC] 1.Elapsed Time: %llu",after-before);
+
+    /* Measure time */
+    before = get_cycles();
+    /* Check current process is monitored */
+    /* For the sake of simulation, it will always be */
+    monitored = check_process_monitored(pid);
+    after = get_cycles();
+    printk("[SMC] 2.Elapsed Time: %llu",after-before);
+
+    /* Convert PID to string to pass to userland */
+    sprintf(smc_device.interrupted_process,"%d",pid);
     /* Tell the AV which process interrupted the execution */
-    int ret = copy_to_user(bufStoreData, smc_device.interrupted_process, bufCount);
+    ret = copy_to_user(bufStoreData, smc_device.interrupted_process, bufCount);
     return ret;
 }
 

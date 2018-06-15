@@ -14,7 +14,7 @@
 #define DEVICE "/dev/smcmod"
 
 /* PID SIZE */
-#define PID_SIZE 5
+#define PID_SIZE 10
 
 /* FLAG SIZE */
 #define FLAG_SIZE 3
@@ -51,8 +51,11 @@ int main(int argc, char *argv[])
     /* Clocks after I/O */
     clock_gettime(CLOCK_MONOTONIC,&ts_final);
 
+    /* Print PID */
+    printf("Identified on PID: %s\n",pid);
+
     /* Elapsed ticks */
-    printf("%lu\n",ts_final.tv_nsec - ts_initial.tv_nsec); 
+    printf("Elapsed Time: %lu\n",ts_final.tv_nsec - ts_initial.tv_nsec); 
 
     /* Close device */
     close(fd);
@@ -60,4 +63,3 @@ int main(int argc, char *argv[])
     /* Finish */
     return 0;
 }
-
