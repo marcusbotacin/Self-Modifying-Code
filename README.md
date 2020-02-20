@@ -20,3 +20,7 @@ Provide a security look over architectural implications of SMC execution.
 ## Paper
 
 * The article *The Self Modifying Code (SMC)-Aware Processor (SAP): A security look on architectural impact and support* was published in the *Journal of Computer Virology and Hacker Techniques*. [Check Preprint Here](https://github.com/marcusbotacin/Self-Modifying-Code/blob/master/Paper/paper.pdf)
+
+## Challenge
+
+* I included in the *Challenge* directory a SMC-based CTF challenge presented to me by Katharina Bogad (thanks). I think that playing with it is an interesting exercise to understand SMC better, so I decided to include it in this repository.
